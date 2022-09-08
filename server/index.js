@@ -18,17 +18,19 @@ try {
   } catch (error) {
     console.log("error occured while connecting to mongo db: "+error);
   }
-
-const PORT = 80;
-
-//middlewares 
-
-//this will run before the req and res of the router 
-//it will contain a next call back function which will run whenever the next function is called in the crud requests.
-// it is just like a remote procedure call.
-// app.use((req, res, next)=>{
+  
+  const PORT = 80;
+  
+  //middlewares 
+  //for cookies
+  app.use(cookieParser()); //use it above all the routes
+  
+  //this will run before the req and res of the router 
+  //it will contain a next call back function which will run whenever the next function is called in the crud requests.
+  // it is just like a remote procedure call.
+  // app.use((req, res, next)=>{
 //   console.log("hi!, I am from middleware");
-//   next(); //we are calling this function here only so that it visits this middleware first.
+//   next(); //we are calling this function here only so that it visits this middleware first and then next operations.
 // })
 
 //error handling middleware
@@ -55,8 +57,6 @@ app.use("/hotels", hotelsroute);
 app.use("/rooms", roomsroute);
 app.use("/users", usersroute);
 
-//for cookies
-app.use(cookieParser());
 
 app.listen(PORT, ()=>{
     console.log("Server running on port: "+PORT);

@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     isAdmin:{
         type: Boolean,
-        default: false
+        default: 0
     }
 }, {timestamps: true});//with timestamps it is gonna update it and create it noting the times.
 

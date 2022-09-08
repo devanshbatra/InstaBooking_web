@@ -1,6 +1,7 @@
 const express = require("express");
 const { getAllHotels, createHotel, updateHotel, deleteHotel, getHotel } = require("../controllers/hotelController");
 const Hotel = require("../models/Hotel");
+const { verifyAdmin } = require("../utils/verifyToken");
 
 const router = express.Router();
 
@@ -8,29 +9,21 @@ const router = express.Router();
 
 
 //Create new hotel
-router.post("/", async (req, res, next)=>{
+router.post("/",verifyAdmin, async (req, res, next)=>{
     createHotel(req, res, next);
 });
 
 //update
-router.put("/:id", async(req, res, next)=>{
-    updateHotel(req, res, next);
-});
+router.put("/:id",verifyAdmin, updateHotel);
 
 //DELETE
-router.delete("/:id", async (req, res, next)=>{
-    deleteHotel(req, res, next);
-});
+router.delete("/:id",verifyAdmin, deleteHotel);
 
 //GET
-router.get("/:id", async (req, res, next)=>{
-    getHotel(req, res, next)
-});
+router.get("/:id", getHotel);
 
 //GET ALL
-router.get("/", (req, res, next)=>{
-    getAllHotels(req, res, next);
-}); 
+router.get("/", getAllHotels); 
 
 
 module.exports = router;
