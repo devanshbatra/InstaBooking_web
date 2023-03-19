@@ -1,11 +1,26 @@
 const express = require("express");
+const { createRoom, updateRoom, deleteRoom, getRoom, getAllRooms } = require("../controllers/roomsConroller");
+const { verifyAdmin } = require("../utils/verifyToken");
 
 const router = express.Router();
 
-router.get("/", (req, res)=>{ //for this auth file we already have used the /auth so we only need to put / here.
+//create room
+router.post("/:hotelid", verifyAdmin, createRoom);
 
-    res.send("rooms endpoint");
 
-});
+//update room
+router.put("/:id", verifyAdmin, updateRoom);
+
+//delete room
+router.delete("/:id/:hotelid", verifyAdmin, deleteRoom);
+
+//get room by id
+router.get("/:id", getRoom);
+
+//get all rooms
+router.get("/", getAllRooms);
+
+
+
 
 module.exports = router;

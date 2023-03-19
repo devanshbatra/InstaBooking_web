@@ -16,7 +16,7 @@ exports.createHotel = async(req, res, next)=>{
 exports.updateHotel = async(req, res, next)=>{
     try{
         // const updatedHotel = await Hotel.findByIdAndUpdate(req.params.id, {$set: req.body});//its gonna return the previous document and not the updated one.    
-        const updatedHotel = await Hotel.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true});//now, its gonna return the new document.   
+        const updatedHotel = await Hotel.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true});//now, its gonna return the new document with new: true, else by default it would return the old document.   
         res.status(200).json(updatedHotel);
     }
     catch(err){
