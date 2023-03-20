@@ -5,7 +5,8 @@ const theme = {
         secondary: "#febb02",
         white: "#fff",
         offWhite: "#f7f7f7",
-        lightgray: "#d3d3d3"
+        lightgray: "#d3d3d3",
+        gray: "#3d3a3a"
     },
 
     fontSizes: {
