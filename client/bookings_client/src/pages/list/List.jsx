@@ -7,7 +7,7 @@ import Navbar from '../../components/navbar';
 
 const List = () => {
   return (
-    <div>
+    <>
       <Navbar/>
       <Header type = "list" />
 
@@ -19,7 +19,7 @@ const List = () => {
       </ListContainer>
 
 
-    </div>
+    </>
   );
 }
 
@@ -30,8 +30,10 @@ const ListContainer = styled.div`
   width: 100%;
   .list-wrapper{
     display: flex;
+    margin: 2rem 0rem;
     width: 100%;
     max-width: 1024px;
+    gap: 1rem;
   }
 `
 

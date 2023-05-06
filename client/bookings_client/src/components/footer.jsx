@@ -9,7 +9,7 @@ const Footer = () => {
             {footerData.map(footItem=>(
                 <ul className="footerItem" key={footItem[0]}>
                     {footItem.map(listItem=>(
-                        <li className='listItem' >{listItem}</li>
+                        <li className='listItem' key={listItem} >{listItem}</li>
                     ))}
                 </ul>
             ))}

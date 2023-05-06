@@ -6,7 +6,9 @@ const theme = {
         white: "#fff",
         offWhite: "#f7f7f7",
         lightgray: "#d3d3d3",
-        gray: "#3d3a3a"
+        gray: "#3d3a3a",
+        green: "#008000",
+        lightblue: "#e8f2ff",
     },
 
     fontSizes: {

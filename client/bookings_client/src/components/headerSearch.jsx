@@ -6,12 +6,14 @@ import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderSearch = () => {
 
+    const navigate = useNavigate();
     const [openDate, setOpenDate] = useState(false);
     const [openOptions, setOpenOptions] = useState(false);
-
+    const [destination, setDestination] = useState("");
     const [dates, setDates] = useState([
         {
             startDate: new Date(),
@@ -19,12 +21,15 @@ const HeaderSearch = () => {
             key: 'selection'
         }
     ]);
-
     const [options, setOptions] = useState({
         adult: 1,
         children: 0,
         room: 1
     });
+
+    const handleSearch = ()=>{
+        navigate('/hotels', {state: {destination, dates, options}});
+    }
 
     const handleOptions = (name, operation)=>{
         setOptions((prev)=>{
@@ -36,7 +41,10 @@ const HeaderSearch = () => {
     <HeaderSearchCont>
         <div className="searchItem">
             <FaBed color='lightgray' />
-            <input type="text" placeholder='Where are you going?' />
+            <input
+                onChange={e=>setDestination(e.target.value)}
+                type="text" placeholder='Where are you going?' 
+            />
         </div>
         <div className="searchItem" >
             <FaCalendarAlt color='lightgray' />
@@ -49,6 +57,7 @@ const HeaderSearch = () => {
                 onChange={(item)=>setDates([item.selection])}
                 moveRangeOnFirstSelection = {false}
                 className= 'date'
+                minDate={new Date()}
             />}
         </div>
         <div className="searchItem">
@@ -93,7 +102,7 @@ const HeaderSearch = () => {
             </div>}
         </div>
         <div className="searchItem">
-            <button className='searchBtn' >Search</button>
+            <button className='searchBtn' onClick={handleSearch} >Search</button>
         </div>
     </HeaderSearchCont>
   );

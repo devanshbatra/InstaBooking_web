@@ -44,7 +44,7 @@ const EmailBarCont = styled.div`
             height: 2.5rem;
             border: none;
             margin-right: 1rem;
-            padding: 4px;
+            padding: 4px 7px;
             outline: none;
             border-radius: 4px;
         }
