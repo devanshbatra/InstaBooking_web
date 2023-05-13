@@ -16,7 +16,12 @@ exports.createRoom = async(req, res, next)=>{
         }
         res.status(200).json(savedRoom);
     }catch(err){
-        return next(err);
+        return next(err); //why are we using return next(err). Because we would be sending to res.send in our next 
+        //function and probably won't come back here.
+        //ab yahan pe to iske baad ka code h nhi but agar khi pe iske baad bhi code ho aur next function apne paas
+        //se he send kar de toh app crash kar jaata h isliye return next() yhi se he kar do.
+
+        //And NEXT means go to the next middle ware, which is we are using.
     }
 
 }

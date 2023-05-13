@@ -1,65 +1,75 @@
 import React from 'react'
 import styled from 'styled-components'
 import { SearchListItem } from '../mocks/listMock';
-import theme from "../theme";
+import { Link } from 'react-router-dom';
 
-const ListResults = () => {
+const ListResults = ({data, loading}) => {
   return (
     <ListResultCont>
-      {SearchListItem.map(item => (
-        <ItemWrapper>
-          {/* left section */}
-          <div className="left-section">
-            <img className='image' src={item.imageSrc} alt="" />
-          </div>
+      {data.length===0? "No results found. Please try refining your search":(
 
-          {/* middle section */}
-          <div className="middle-section">
-            <span className="hotel-name">{item.name}</span>
-            <span className="dist">{item.distanceFromCenter} from center</span>
-            {item.airportTaxi && (
-              <span className="airport">Free airport Taxi</span>
-            )}
-            <span className="desc">{item.description}</span>
-            <div className="components">
-              {item.components.map((comp, i, components) => (
-                
-                <div className="comp">
-                  <div className="dot"></div>
-                  <span>{comp}</span>
-                </div>
-              ))}
-            </div>
-
-            {item.freeCancellation && (
-              <div className="free-cancel">
-                <span className='free-cancel-title'>Free Cancellation</span>
-                <span className='free-cancel-subtitle' >You can cancel later, so lock in this great price today!</span>
+        <>
+          {data.map((item, i) => (
+            <ItemWrapper>
+              {/* left section */}
+              <div className="left-section">
+                <img className='image' src={SearchListItem[i].imageSrc} alt="" />
               </div>
-            )}
 
-          </div>
+              {/* middle section */}
+              <div className="middle-section">
+                <span className="hotel-name">{item.name}</span>
+                <span className="dist">{item.distance} from center</span>
+                {/* {item.airportTaxi && (
+                  <span className="airport">Free airport Taxi</span>
+                )} */}
+                <span className="airport">Free airport Taxi</span>
+                <span className="desc">{item.title}</span>
+                <div className="components">
+                  <p className="comp">{item.description}</p>
+                </div>
 
-          {/* right section */}
-          <div className="right-section">
-            <div className="rating">
-              <div className="rating-btn">{item.rating}</div>
-              <p className="rating-review">
-                {item.rating < 4 ? "Poor" : item.rating < 8 ? "Good" : "Excellent"}
-              </p>
-            </div>
-            
-            <div className="price-section">
-              <span className="price">${item.price}</span>
-              <span className="taxes">includes taxes and fares</span>
-              <button className='avail-btn' >See availability</button>
-            </div>
+                {/* {item.freeCancellation && (
+                  <div className="free-cancel">
+                    <span className='free-cancel-title'>Free Cancellation</span>
+                    <span className='free-cancel-subtitle' >You can cancel later, so lock in this great price today!</span>
+                  </div>
+                )} */}
+                <div className="free-cancel">
+                  <span className='free-cancel-title'>Free Cancellation</span>
+                  <span className='free-cancel-subtitle' >You can cancel later, so lock in this great price today!</span>
+                </div>
+
+              </div>
+
+              {/* right section */}
+              <div className="right-section">
+                {
+                  item.ratings && (
+                    <div className="rating">
+                      <div className="rating-btn">{item.ratings}</div>
+                      <p className="rating-review">
+                        {item.rating < 2 ? "Poor" : item.ratings < 4 ? "Good" : "Excellent"}
+                      </p>
+                    </div>
+                  )
+                }
+                
+                <div className="price-section">
+                  <span className="price">${item.cheapestPrice}</span>
+                  <span className="taxes">includes taxes and fares</span>
+                  <Link to={`/hotels/${item._id}`}>
+                    <button className='avail-btn' >See availability</button>
+                  </Link>
+                </div>
 
 
-          </div>
+              </div>
 
-        </ItemWrapper>
-      ))}
+            </ItemWrapper>
+          ))}
+        </>
+      )}
     </ListResultCont>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {FaBed, FaCalendarAlt} from "react-icons/fa";
 import {ImMan} from "react-icons/im";
 import styled from 'styled-components';
@@ -7,6 +7,7 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import { SearchContext } from '../contexts/searchContext';
 
 const HeaderSearch = () => {
 
@@ -27,7 +28,12 @@ const HeaderSearch = () => {
         room: 1
     });
 
+    
+    const {dispatch} = useContext(SearchContext);
+
+
     const handleSearch = ()=>{
+        dispatch({type: "NEW_SEARCH", payload: {destination, dates, options}});
         navigate('/hotels', {state: {destination, dates, options}});
     }
 
@@ -36,6 +42,7 @@ const HeaderSearch = () => {
             return {...prev, [name]: operation==='i'?options[name]+1 : options[name]-1}
         });
     }
+
 
   return (
     <HeaderSearchCont>
@@ -49,7 +56,7 @@ const HeaderSearch = () => {
         <div className="searchItem" >
             <FaCalendarAlt color='lightgray' />
             <span className='searchText' onClick={()=>setOpenDate(!openDate)} >
-                {format(dates[0].startDate, "dd/mm/yyyy")} to {format(dates[0].endDate, "dd/mm/yyyy")}
+                {format(dates[0].startDate, "dd/MM/yyyy")} to {format(dates[0].endDate, "dd/MM/yyyy")}
             </span>
             {openDate && <DateRange
                 editableDateInputs = {true}

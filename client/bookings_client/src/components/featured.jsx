@@ -2,20 +2,29 @@ import React from 'react';
 import styled from 'styled-components';
 import {featuredItemList} from '../mocks/homeMock';
 import theme from '../theme';
+import useFetch from '../hooks/useFetch';
 const Featured = () => {
+
+    const {loading, data, error} = useFetch("http://localhost/hotels/countByCity?cities=bankok,newyork,sydney");
+
+
   return (
     <FeaturedCont>
-        {
-            featuredItemList.map((item)=>(
-                <FeaturedItem key={item.name}>
-                    <img src={item.imageSrc} alt={item.name} />
-                    <div className="featuredTitles">
-                        <h1> {item.name} </h1>
-                        <h2>{item.properties} properties</h2>
-                    </div>
-                </FeaturedItem>
-            ))
-        }
+        {loading? "Loading, please wait...":(
+            <>
+                {
+                    featuredItemList.map((item, i)=>(
+                        <FeaturedItem key={item.name}>
+                            <img src={item.imageSrc} alt={item.name} />
+                            <div className="featuredTitles">
+                                <h1> {item.name} </h1>
+                                <h2>{data[i]} properties</h2>
+                            </div>
+                        </FeaturedItem>
+                    ))
+                }
+            </>
+        )}
     </FeaturedCont>
   );
 }

@@ -1,19 +1,27 @@
 import React from 'react'
 import styled from 'styled-components';
 import { propertyTypes } from '../mocks/homeMock';
+import useFetch from '../hooks/useFetch';
 
 const PropertyList = () => {
+
+    const {data, error, loading } = useFetch("http://localhost:80/hotels/countByType");
+
   return (
     <PropTypeCont>
-        {propertyTypes.map(ptype=>(
-            <div className="propertyItem" key={ptype.name}>
-                <img src={ptype.imageSrc} alt={ptype.name} />
-                <div className="propTypeTitle">
-                    <p className="title">{ptype.name}</p>
-                    <p className="subtitle">{ptype.properties} {ptype.name.toLowerCase()}</p>
-                </div>
-            </div>
-        ))}
+        {loading?("Loading, Please wait..."):(
+            <>
+                {data?.map((ptype, i)=>(  //just to make sure that this data array is not empty.
+                    <div className="propertyItem" key={ptype.type}>
+                        <img src={propertyTypes[i].imageSrc} alt={ptype.type} />
+                        <div className="propTypeTitle">
+                            <p className="title">{ptype.type}</p>
+                            <p className="subtitle">{ptype.count} {ptype.type}</p>
+                        </div>
+                    </div>
+                ))}
+            </>
+        )}
     </PropTypeCont>
   );
 }
@@ -40,6 +48,7 @@ const PropTypeCont = styled.div`
     .title{
         font-size: ${props=> props.theme.fontSizes.fs1};
         font-weight: bold;
+        text-transform: capitalize;
     }
     .subtitle{
         font-size: ${props=> props.theme.fontSizes.fs0};

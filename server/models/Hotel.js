@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 
+//models are like tables for the database.
+//we have schema, which is the structure of the table.
+
 const hotelSchema = new mongoose.Schema({
     name: {
         type: String,

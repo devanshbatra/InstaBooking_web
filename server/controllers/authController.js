@@ -32,16 +32,16 @@ exports.register = async(req, res, next)=>{
 exports.login = async(req, res, next)=>{
     const {username, password}  = req.body;
 
-    console.log(username, password);
-
+    
     try{
         const user = await User.findOne({username: username});
         if(!user) return next(createError(404, "User not found!"));
-
+        
         const isPassValid = await bcrypt.compare(password, user.password);
         if(!isPassValid) return next(createError(400, "Incorrect username or password"));
-
+        
         //the user founds to be valid
+        console.log("logged in as: ", username, password);
 
         //for user session - make a jwt token and store that into the cookies using cookie parser
         const token = jwt.sign({id: user._id, isAdmin: user.isAdmin}, process.env.jwt);
@@ -50,8 +50,8 @@ exports.login = async(req, res, next)=>{
 
 
         res
-            .cookie("access_token", token, {httpOnly: true}) //httponly so that client cannot read our token.
-            .status(500)
+            .cookie("access_token", token, {httpOnly: true}) //httponly so that client script cannot modify our token.
+            .status(200)
             .json(user);
 
     }catch(err){

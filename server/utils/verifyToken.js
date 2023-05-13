@@ -13,11 +13,11 @@ exports.verifyToken = (req, res, next)=>{
     const token = req.cookies.access_token ;
     //check if token present
     if(!token) return next(createError(400, "Token not found"));
-
+    
     //verify the token
     jwt.verify(token, process.env.JWT, (err, user)=>{
         if(err) return next(createError(401, "Token not valid"));
-
+        
         //else we will store the user data previously stored in the token (userid and isAdmin) in the req.anyvariable
         req.tokenuser = user;
         //call the next operation
@@ -32,6 +32,7 @@ exports.verifyUser=(req, res, next)=>{
     this.verifyToken(req, res, ()=>{
         //chk if params mein jo id di hai aur req mein jo lagayi hai verify token ke through
         //kya wo same h ya phir ye admin hai to bhi authorized hai
+        console.log(req.tokenuser);
         if((req.tokenuser.id === req.params.id) || req.tokenuser.isAdmin){
             next();
         }else{

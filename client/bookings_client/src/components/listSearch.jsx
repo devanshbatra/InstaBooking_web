@@ -1,33 +1,13 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 import { DateRange } from 'react-date-range';
 
-const ListSearch = () => {
-
-
-    const location = useLocation();
-
-    const [destination, setDestination] = useState(location.state? location.state.destination : "demoDestination");
-
-    const [options, setOptions] = useState(location.state? location.state.options : {
-        adult: 1,
-        children: 0,
-        room: 1
-    });
-
-    const [dates, setDates] = useState(location.state?location.state.dates: [{
-        startDate: new Date(),
-        endDate: new Date(),
-        key: 'selection'
-    }]);
+const ListSearch = ({destination, setDestination, options, dates, setDates, setMin, setMax, handleSearch}) => {
 
     const [openDate, setOpenDate] = useState(false);
 
-
-
-
+ 
     return (
         <ListSearchCont>
             <h1 className="heading">Search</h1>
@@ -35,12 +15,12 @@ const ListSearch = () => {
             <form className='list-form' >
                 <div className="dest">
                     <h2>Destination</h2>
-                    <input type="text" name="destination" id="" placeholder={destination} />
+                    <input type="text" name="destination" id="" placeholder={destination} onChange={(e)=> setDestination(e.target.value)} />
                 </div>
                 <div className="date">
                     <h2>Check-in date</h2>
                     <span onClick={()=>setOpenDate(!openDate)}>
-                        {format(dates[0].startDate, "dd/mm/yyyy")} to {format(dates[0].endDate, "dd/mm/yyyy")}
+                        {format(dates[0].startDate, "dd/MM/yyyy")} to {format(dates[0].endDate, "dd/MM/yyyy")}
                     </span>
                 </div>
                 {openDate && <DateRange
@@ -55,27 +35,27 @@ const ListSearch = () => {
                 <div className="options">
                     <h2 className='options-head' >Options</h2>
                     <div className="option">
-                        <h3 className="option-label">Min price (per night)</h3>
-                        <input type="text" name="" id="" />
+                        <h3 className="option-label">Min price ($ per night)</h3>
+                        <input type="number" name="" id="" onChange={(e)=>setMin(e.target.value)} />
                     </div>
                     <div className="option">
-                        <h3 className="option-label">Max price (per night)</h3>
-                        <input type="text" name="" id="" />
+                        <h3 className="option-label">Max price ($ per night)</h3>
+                        <input type="number" name="" id="" onChange={(e)=>setMax(e.target.value)} />
                     </div>
                     <div className="option">
                         <h3 className="option-label">Adult</h3>
-                        <input type="text" name="" id="" placeholder={options.adult} />
+                        <input type="number" name="" id="" placeholder={options.adult} />
                     </div>
                     <div className="option">
                         <h3 className="option-label">Children</h3>
-                        <input type="text" name="" id="" placeholder={options.children} />
+                        <input type="number" name="" id="" placeholder={options.children} />
                     </div>
                     <div className="option">
                         <h3 className="option-label">room</h3>
-                        <input type="text" name="" id="" placeholder={options.room} />
+                        <input type="number" name="" id="" placeholder={options.room} />
                     </div>
                 </div>
-                <button className='search-btn' >Search</button>
+                <button className='search-btn' onClick={handleSearch} >Search</button>
             </form>
 
         </ListSearchCont>

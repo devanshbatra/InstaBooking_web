@@ -1,4 +1,5 @@
 const Hotel = require("../models/Hotel");
+const createError = require("../utils/error");
 //controller are to reduce the code on the routes page.
 
 
@@ -20,7 +21,7 @@ exports.updateHotel = async(req, res, next)=>{
         res.status(200).json(updatedHotel);
     }
     catch(err){
-        next(err);
+         next(err);
     }
 }
 
@@ -33,6 +34,7 @@ exports.deleteHotel = async(req, res, next)=>{
     }
 }
 exports.getHotel = async(req, res, next)=>{
+    console.log("came here");
     try{
         const hotel = await Hotel.findById(req.params.id);
         res.status(200).json(hotel);
@@ -42,11 +44,52 @@ exports.getHotel = async(req, res, next)=>{
 }
 
 
-exports.getAllHotels = async(req, res, next)=>{
+exports.getHotels = async(req, res, next)=>{
+    const {min, max, limit, ...others} = req.query; //others denote the direct fields provided.- such as type, featured, rooms etc.
     try{
-        const hotels = await Hotel.find();
-        res.status(200).json(hotels);
+        // const hotels = await Hotel.find(others).limit(limit); // its simple without min and max constraints and limit means limit the number of results.
+        const hotels = await Hotel.find({...others, cheapestPrice: {$gte:min||1, $lte: max||99999}}).limit(limit); //gt: greater than
+        res.status(200).json(hotels);   
     }catch(err){
         return next(err);
+    }
+}
+
+exports.countByCity = async(req, res, next)=>{
+    const cities = req.query.cities.split(",");
+
+    try{
+        const listOfNumbers = await Promise.all(cities.map(city=>{
+            // return Hotel.find({city: city}).length; //we could do this but it will fetch all the properties so its a little bit expensive.
+            return Hotel.countDocuments({city: city});
+        }));
+
+        res.status(200).json(listOfNumbers);
+    }
+    catch(err){
+        next(createError(500, "cannot fetch numbers by city name"));
+    }
+
+}
+
+exports.countByType = async(req, res, next)=>{
+    try{
+        const hotels = await Hotel.countDocuments({type: "hotel"});
+        const villas = await Hotel.countDocuments({type: "villas"});
+        const resorts = await Hotel.countDocuments({type: "resorts"});
+        const cabins = await Hotel.countDocuments({type: "cabins"});
+        const cottages = await Hotel.countDocuments({type: "cottages"});
+
+        res.status(200).json([
+            {type: "hotels", count: hotels},
+            {type: "villas", count: villas},
+            {type: "resorts", count: resorts},
+            {type: "cabins", count: cabins},
+            {type: "cottages", count: cottages},
+        ]);
+
+    }
+    catch(err){
+        next(err);
     }
 }

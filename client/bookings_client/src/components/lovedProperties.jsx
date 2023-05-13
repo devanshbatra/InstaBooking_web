@@ -1,26 +1,38 @@
 import React from 'react'
 import styled from 'styled-components';
 import { lovedProp } from '../mocks/homeMock';
+import useFetch from '../hooks/useFetch';
 
 const LovedProperties = () => {
+
+    const {data, error, loading} = useFetch("http://localhost:80/hotels?featured=true&limit=4");
+
   return (
     <LovedPropCont>
-        {lovedProp.map(ptype=>(
-            <div className="propertyItem" key={ptype.name}>
-                <img src={ptype.imageSrc} alt={ptype.name} />
-                <div className="propDesc">
-                    <span className="title">{ptype.name}</span>
-                    <span className="location">{ptype.location}</span>
-                    <span className="price">starting from {ptype.startPrice}$</span>
-                    <div className="rating">
-                        <button className="rating_btn">{ptype.rating}</button>
-                        <p className="ratingReview">
-                            {ptype.rating<4?"Poor": ptype.rating<8? "Good" : "Excellent"}
-                        </p>
+        {loading? "Loading, please wait...":(  
+            <>
+                {data.map((dataItem, i)=>(
+                    <div className="propertyItem" key={dataItem.name}>
+                        <img src={lovedProp[i].imageSrc} alt={dataItem.name} />
+                        <div className="propDesc">
+                            <span className="title">{dataItem.name}</span>
+                            <span className="location">{dataItem.city}</span>
+                            <span className="price">starting from {dataItem.cheapestPrice}$</span>
+                            {
+                                dataItem.ratings && (
+                                    <div className="rating">
+                                        <button className="rating_btn">{dataItem.ratings}</button>
+                                        <p className="ratingReview">
+                                            {dataItem.ratings<2?"Poor": dataItem.ratings<4? "Good" : "Excellent"}
+                                        </p>
+                                    </div>
+                                )
+                            }
+                        </div>
                     </div>
-                </div>
-            </div>
-        ))}
+                ))}
+            </>
+        )}
     </LovedPropCont>
   );
 }
