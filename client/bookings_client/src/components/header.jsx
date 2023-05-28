@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import {FaBed, FaPlaneDeparture, FaCarAlt, FaTaxi} from "react-icons/fa";
 import HeaderSearch from './headerSearch';
+import { AuthContext } from '../contexts/authContext';
 
 
 const Header = ({type}) => {
+    const {user} = useContext(AuthContext);
   return (
     <HeaderOuter>
         <div className='headerCont'>
@@ -42,7 +44,9 @@ const Header = ({type}) => {
                         Get rewarded for your travels - unlock instant savings of 10% or more with a free InstaBooking account.
                     </span>
                     <div>
-                        <button className='headerBtn'>Sign in / Register</button>
+                        {user? "": (
+                            <button className='headerBtn'>Sign in / Register</button>
+                        )}
                     </div>
                     <HeaderSearch/>
                 </>

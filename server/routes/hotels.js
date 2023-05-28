@@ -1,5 +1,5 @@
 const express = require("express");
-const { createHotel, updateHotel, deleteHotel, getHotel, countByCity, countByType, getHotels } = require("../controllers/hotelController");
+const { createHotel, updateHotel, deleteHotel, getHotel, countByCity, countByType, getHotels, getHotelRooms } = require("../controllers/hotelController");
 const Hotel = require("../models/Hotel");
 const { verifyAdmin } = require("../utils/verifyToken");
 
@@ -23,6 +23,7 @@ router.delete("/:id",verifyAdmin, deleteHotel);
 router.get("/find/:id", getHotel);
 router.get("/countByCity", countByCity);
 router.get("/countBytype", countByType);
+router.get("/getRooms/:hotelid", getHotelRooms);
 
 
 //GET MORE THAN ONE HOTELS USING QUERY.

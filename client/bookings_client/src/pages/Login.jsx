@@ -37,29 +37,27 @@ function Login() {
 
   return (
       <LoginWrapper>
-        {loading? "Loading, Please wait...": (
-            <>
-                <div className="sec-cont">
-                    <div className="left-panel">
-                        <h1 className="login-heading">Welcome Back,</h1>
-                        <p className="err-para">{error?.message}</p>
-                        <form className="login-form">
-                            <input type="text" id="username" name="username" className="input-field" placeholder="Username" minLength="6" onChange = {handleChange}  />
-                            <input type="password" id="password" name="password" className="input-field" placeholder="Password" onChange={handleChange} />
-                            <button type="submit" className="login-btn" onClick={handleLogin} >Sign In</button>
-                        </form>
-                        <p className="login-para">Doesn't have an account? <span><Link to="/register">Sign-up here</Link></span></p>
-                    </div>
+        <div className="sec-cont">
+            <div className="left-panel">
+                <h1 className="login-heading">Welcome Back,</h1>
+                <p className="err-para">{error?.message}</p>
+                <form className="login-form">
+                    <input type="text" id="username" name="username" className="input-field" placeholder="Username" minLength="6" onChange = {handleChange}  />
+                    <input type="password" id="password" name="password" className="input-field" placeholder="Password" onChange={handleChange} />
+                    <button disabled={loading} type="submit" className="login-btn" onClick={handleLogin} >{
+                        loading? "Loading..": "Sign In"
+                    }</button>
+                </form>
+                <p className="login-para">Doesn't have an account? <span><Link to="/register">Sign-up here</Link></span></p>
+            </div>
 
-                    <div className="right-panel">
-                        {/* <img src={loginImg} alt="" /> */}
-                        <h1 className='right-head white center'>New here?</h1>
-                        <p className="right-para white center">Sign up and discover great amount of new opportunities!</p>
-                        <Link to="/register"><button className='sign-btn white'>SIGN UP</button></Link>
-                    </div>
-                </div>
-            </>
-        )}
+            <div className="right-panel">
+                {/* <img src={loginImg} alt="" /> */}
+                <h1 className='right-head white center'>New here?</h1>
+                <p className="right-para white center">Sign up and discover great amount of new opportunities!</p>
+                <Link to="/register"><button className='sign-btn white'>SIGN UP</button></Link>
+            </div>
+        </div>
     </LoginWrapper>
   );
 }

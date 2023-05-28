@@ -9,16 +9,20 @@ import Footer from '../components/footer';
 import {BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill} from 'react-icons/bs';
 import {TbCircleX} from 'react-icons/tb';
 import useFetch from '../hooks/useFetch';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { SearchContext } from '../contexts/searchContext';
+import RoomsModal from '../components/roomsModal';
+import { AuthContext } from '../contexts/authContext';
 
 function Hotel() {
     
     const location = useLocation();
-    const {data, error, loading} = useFetch(`http://localhost:80/hotels/find/${location.pathname.split("/")[2]}`);
+    const hotelId = location.pathname.split("/")[2];
+    const {data, error, loading} = useFetch(`http://localhost:80/hotels/find/${hotelId}`);
     // console.log("data: ", data);
     const [slideIndex, setSlideIndex] = useState(0);
     const [openModal, setOpenModal] = useState(false);
+    const [openRooms, setOpenRooms] = useState(false);
 
     const handleOpen = (i)=>{
         setSlideIndex(i);
@@ -32,6 +36,16 @@ function Hotel() {
     const goLeft = ()=>{
         var newIndex = slideIndex===0 ? hotelPhotos.length-1 : slideIndex-1;
         setSlideIndex(newIndex);
+    }
+
+    //booking rooms
+    const {user} = useContext(AuthContext);
+    const navigate = useNavigate();
+    const handleBook = () =>{
+
+        if(user) setOpenRooms(true);
+        else navigate('/login');
+
     }
 
     const {options, dates} = useContext(SearchContext);
@@ -72,7 +86,7 @@ function Hotel() {
                             <div className="offer">Book a stay over ${data.cheapestPrice} at this property and get a free airport taxi</div>
                         </div>
 
-                        <ReserveBtn >Reserve or Book Now!</ReserveBtn>
+                        <ReserveBtn onClick={handleBook} >Reserve or Book Now!</ReserveBtn>
                     </div>
 
                     {/* Photos section */}
@@ -102,6 +116,7 @@ function Hotel() {
                             <ReserveBtn >Reserve or Book Now!</ReserveBtn>
                         </div>
                     </div>
+                    {openRooms && (<RoomsModal setOpen={setOpenRooms} hotelId = {hotelId} />)}
                 </HotelWrapper>
             </>
         )}

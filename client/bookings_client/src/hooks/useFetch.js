@@ -19,6 +19,7 @@ const useFetch = (url)=>{
                 const res = await axios.get(url);
                 
                 setData(res.data);
+                console.log(res.data);
             }
             catch(err){
                 setError(err);

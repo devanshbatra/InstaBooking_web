@@ -1,20 +1,51 @@
-import React from 'react'
+import React, {useContext, useState} from 'react'
 import styled from 'styled-components';
 import loginImg from '../assets/images/login/login_photo.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/authContext';
+import axios from 'axios';
 
 function Register() {
+
+    const navigate = useNavigate();
+    const [credentials, setCredentials] = useState({
+        username: undefined,
+        email: undefined,
+        password: undefined
+    });
+
+    const handleChange = (e)=>{
+        setCredentials((prev)=>({...prev, [e.target.id] : e.target.value }));
+    }
+
+
+    const {error, loading, dispatch} = useContext(AuthContext);
+
+    const handleRegister = async (e)=>{
+        e.preventDefault();
+        dispatch({"type": "LOGIN_START"});
+        try{
+            const res = await axios.post("http://localhost:80/auth/register", credentials);
+            dispatch({type: "LOGIN_SUCCESS", "payload": res.data});
+            navigate("/");
+        }catch(err){
+            dispatch({"type": "LOGIN_FAILURE", "payload": err.response.data})
+            console.log(err);
+        }
+    }
+
+
   return (
     <LoginWrapper>
         <div className="sec-cont">
             <div className="left-panel">
                 <h1 className="login-heading">Hey, Welcome</h1>
-                <p className="err-para">err</p>
+                <p className="err-para">{error?.message}</p>
                 <form className="login-form">
-                    <input type="text" name="email" className="input-field" placeholder="Email" minLength="6"  />
-                    <input type="text" name="username" className="input-field" placeholder="Username" />
-                    <input type="password" name="password" className="input-field" placeholder="Password" />
-                    <button type="submit" className="login-btn">Register</button>
+                    <input type="text" name="email" id="email" className="input-field" placeholder="Email" minLength="6" onChange={handleChange}  />
+                    <input type="text" name="username" id="username" className="input-field" placeholder="Username" onChange={handleChange} />
+                    <input type="password" name="password" id="password" className="input-field" placeholder="Password" onChange={handleChange} />
+                    <button type="submit" className="login-btn" onClick={handleRegister} >Register</button>
                 </form>
                 <p className="login-para">Doesn't have an account? <span><Link to="/login">Login here</Link></span></p>
             </div>
@@ -23,7 +54,9 @@ function Register() {
                 {/* <img src={loginImg} alt="" /> */}
                 <h1 className='right-head white center'>Already a user?</h1>
                 <p className="right-para white center">Login and continue you booking now!</p>
-                <Link to="/login"><button className='sign-btn white'>Login</button></Link>
+                <Link to="/login"><button className='sign-btn white'>
+                    {loading? "Please wait..": "Loading"}    
+                </button></Link>
             </div>
         </div>
     </LoginWrapper>

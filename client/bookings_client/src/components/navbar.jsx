@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { AuthContext } from '../contexts/authContext';
 
 const Navbar = () => {
-  return (
-    <NavbarOuter>
-        <div className="navbarCont">
-            <div className="logo">Insta Bookings</div>
-            <div className="navButtonCont">
-                <button className='navBtn' >Register</button>
-                <button className='navBtn' >Login</button>
+    const {user} = useContext(AuthContext);
+    return (
+        <NavbarOuter>
+            <div className="navbarCont">
+                <div className="logo">Insta Bookings</div>
+                <div className="navButtonCont">
+                    {
+                        user? "Hello, "+user.username: (
+                            <>
+                                <button className='navBtn' >Register</button>
+                                <button className='navBtn' >Login</button>
+                            </>
+                        )
+                    }
+                </div>
             </div>
-        </div>
-    </NavbarOuter>
-  );
+        </NavbarOuter>
+    );
 }
 
 

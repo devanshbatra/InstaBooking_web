@@ -11,10 +11,10 @@ export const AuthContext = createContext(INITIAL_STATE);
 
 //reducer function - used to feed the new data to our state.
 const AuthReducer = (state, action)=>{
-    //action has two child type and payload.
+    //action has two child type and payload. action is sent to the a
     switch(action.type){
         case "LOGIN_START": //THIS CASE IS TO START THE LOADING.
-            return {
+            return { //return ka matlab hai state ko ye kardo.
                 user: null,
                 loading: true,
                 error: null

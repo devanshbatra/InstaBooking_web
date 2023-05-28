@@ -1,4 +1,5 @@
 const Hotel = require("../models/Hotel");
+const Room = require("../models/Room");
 const createError = require("../utils/error");
 //controller are to reduce the code on the routes page.
 
@@ -34,7 +35,6 @@ exports.deleteHotel = async(req, res, next)=>{
     }
 }
 exports.getHotel = async(req, res, next)=>{
-    console.log("came here");
     try{
         const hotel = await Hotel.findById(req.params.id);
         res.status(200).json(hotel);
@@ -91,5 +91,19 @@ exports.countByType = async(req, res, next)=>{
     }
     catch(err){
         next(err);
+    }
+}
+
+exports.getHotelRooms = async (req, res, next)=>{
+    try{
+        const hotel = await Hotel.findById(req.params.hotelid);
+        const list = await Promise.all(hotel.rooms.map(room=>{
+            return Room.findById(room);
+        }));
+
+        res.status(200).json(list);
+    }
+    catch(err){
+        return next(err);
     }
 }
