@@ -37,6 +37,24 @@ exports.updateRoom = async(req, res, next) => {
     }
 }
 
+exports.updateAvailability = async(req, res, next) =>{
+    try{
+        await Room.updateOne(
+            {"roomNumbers._id": req.params.id},
+            {
+                $push: {
+                    "roomNumbers.$.unavailableDates": req.body.dates //dollar used bcs of nested data. 
+                }
+            }
+        )
+
+        res.status(200).send("rooms has been updated");
+    }
+    catch(err){
+        return next(err);
+    }
+}
+
 //delete
 exports.deleteRoom = async(req, res, next)=>{
     const roomid = req.params.id;

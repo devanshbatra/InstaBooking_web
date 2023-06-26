@@ -13,12 +13,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { SearchContext } from '../contexts/searchContext';
 import RoomsModal from '../components/roomsModal';
 import { AuthContext } from '../contexts/authContext';
+import hostName from '../mocks/hostName';
 
 function Hotel() {
     
     const location = useLocation();
     const hotelId = location.pathname.split("/")[2];
-    const {data, error, loading} = useFetch(`http://localhost:80/hotels/find/${hotelId}`);
+    const {data, error, loading} = useFetch(`${hostName}/hotels/find/${hotelId}`);
     // console.log("data: ", data);
     const [slideIndex, setSlideIndex] = useState(0);
     const [openModal, setOpenModal] = useState(false);
@@ -103,7 +104,7 @@ function Hotel() {
                         <div className="desc-section">
                             <h2 className="desc-heading">{data.title}</h2>
                             <p className="desc">
-                            Welcome to the luxurious Hotel Polonia in Warsaw! Our elegant rooms offer breathtaking views of the city skyline and feature comfortable beds and modern amenities. Wake up to a delicious breakfast buffet served in our sophisticated dining room. Unwind with a cocktail in our cozy lounge or enjoy a workout in our fully-equipped fitness center. Our attentive staff is always on hand to ensure you have a memorable stay. Conveniently located in the heart of Warsaw, our hotel is the perfect base for exploring this vibrant city.
+                                {data.desc}
                             </p>
                         </div>
                         <div className="price-section">
@@ -113,7 +114,7 @@ function Hotel() {
                                 <span className="price">${data.cheapestPrice * days * options.room}</span>
                                 <span className="duration">({days} nights - {options.room} rooms)</span>
                             </div>
-                            <ReserveBtn >Reserve or Book Now!</ReserveBtn>
+                            <ReserveBtn onClick={handleBook} >Reserve or Book Now!</ReserveBtn>
                         </div>
                     </div>
                     {openRooms && (<RoomsModal setOpen={setOpenRooms} hotelId = {hotelId} />)}

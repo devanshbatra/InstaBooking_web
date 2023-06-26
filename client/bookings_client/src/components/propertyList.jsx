@@ -2,21 +2,49 @@ import React from 'react'
 import styled from 'styled-components';
 import { propertyTypes } from '../mocks/homeMock';
 import useFetch from '../hooks/useFetch';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useContext } from 'react';
+import { SearchContext } from '../contexts/searchContext';
+import hostName from '../mocks/hostName';
 
 const PropertyList = () => {
 
-    const {data, error, loading } = useFetch("http://localhost:80/hotels/countByType");
+    const {data, error, loading } = useFetch(`${hostName}/hotels/countByType`);
+    const [propertyType, setPropertyType] = useState("");
+    const [dates, setDates] = useState([
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection'
+        }
+    ]);
+    const [options, setOptions] = useState({
+        adult: 1,
+        children: 0,
+        room: 1
+    });
+    const navigate = useNavigate();
+    const {dispatch} = useContext(SearchContext);
+
+    const handleClick=(type)=>{
+        setPropertyType(type);
+        dispatch({type: "NEW_SEARCH", payload: {destination: "", dates, options}});
+
+        navigate('/hotels', {state: {destination: "Enter destination", dates, options, propertyType: type}});
+
+    }
 
   return (
     <PropTypeCont>
         {loading?("Loading, Please wait..."):(
             <>
                 {data?.map((ptype, i)=>(  //just to make sure that this data array is not empty.
-                    <div className="propertyItem" key={ptype.type}>
+                    <div className="propertyItem" key={ptype.type}  onClick={()=>handleClick(ptype.type.toLowerCase())} >
                         <img src={propertyTypes[i].imageSrc} alt={ptype.type} />
                         <div className="propTypeTitle">
-                            <p className="title">{ptype.type}</p>
-                            <p className="subtitle">{ptype.count} {ptype.type}</p>
+                            <p className="title">{ptype.type+"s"}</p>
+                            <p className="subtitle">{ptype.count} {ptype.type+"s"}</p>
                         </div>
                     </div>
                 ))}
@@ -35,6 +63,7 @@ const PropTypeCont = styled.div`
     justify-content: space-between;
 
     .propertyItem{
+        cursor: pointer;
         width: 10rem;
         height: 7rem;
     }

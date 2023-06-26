@@ -31,27 +31,27 @@ export const featuredItemList = [
 
 export const propertyTypes = [
     {
-        name: "Hotels",
+        name: "Hotel",
         properties: "1,356",
         imageSrc: hotels
     },
     {
-        name: "villas",
+        name: "villa",
         properties: "234",
         imageSrc: villas
     },
     {
-        name: "resorts",
+        name: "resort",
         properties: "1,216",
         imageSrc: resorts
     },
     {
-        name: "cabins",
+        name: "cabin",
         properties: "344",
         imageSrc: cabins
     },
     {
-        name: "cottages",
+        name: "cottage",
         properties: "56",
         imageSrc: cottages
     },

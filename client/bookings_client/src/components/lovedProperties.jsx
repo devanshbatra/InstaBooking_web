@@ -1,19 +1,47 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components';
-import { lovedProp } from '../mocks/homeMock';
+// import { lovedProp } from '../mocks/homeMock';
 import useFetch from '../hooks/useFetch';
+import hostName from '../mocks/hostName';
+import miasto from '../assets/images/loved_prop/miasto.png';
+import { SearchContext } from '../contexts/searchContext';
+import { useNavigate } from 'react-router-dom';
 
 const LovedProperties = () => {
 
-    const {data, error, loading} = useFetch("http://localhost:80/hotels?featured=true&limit=4");
+    const {data, error, loading} = useFetch(`${hostName}/hotels?featured=true&limit=4`);
+
+    const [destination, setDestination] = useState("");
+    const [dates, setDates] = useState([
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection'
+        }
+    ]);
+    const [options, setOptions] = useState({
+        adult: 1,
+        children: 0,
+        room: 1
+    });
+    const navigate = useNavigate();
+    const {dispatch} = useContext(SearchContext);
+
+    const handleClick=(id, city)=>{
+        setDestination(city);
+
+        dispatch({type: "NEW_SEARCH", payload: {city, dates, options}});
+        navigate(`/hotels/${id}`);
+
+    }
 
   return (
     <LovedPropCont>
         {loading? "Loading, please wait...":(  
             <>
                 {data.map((dataItem, i)=>(
-                    <div className="propertyItem" key={dataItem.name}>
-                        <img src={lovedProp[i].imageSrc} alt={dataItem.name} />
+                    <div className="propertyItem" key={dataItem._id} onClick = {()=>handleClick(dataItem._id, dataItem.city)} >
+                        <img src={miasto} alt={dataItem.name} />
                         <div className="propDesc">
                             <span className="title">{dataItem.name}</span>
                             <span className="location">{dataItem.city}</span>
@@ -48,6 +76,7 @@ const LovedPropCont = styled.div`
     .propertyItem{
         width: 15rem;
         height: 18rem;
+        cursor: pointer;
     }
     .propDesc{
         display: flex;

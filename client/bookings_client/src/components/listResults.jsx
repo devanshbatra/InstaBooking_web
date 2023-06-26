@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { SearchListItem } from '../mocks/listMock';
+// import { SearchListItem } from '../mocks/listMock';
 import { Link } from 'react-router-dom';
+import Hotel1 from '../assets/images/hotel_list/hotel1.png';
 
 const ListResults = ({data, loading}) => {
   return (
@@ -10,10 +11,10 @@ const ListResults = ({data, loading}) => {
 
         <>
           {data.map((item, i) => (
-            <ItemWrapper>
+            <ItemWrapper key={item._id} >
               {/* left section */}
               <div className="left-section">
-                <img className='image' src={SearchListItem[i].imageSrc} alt="" />
+                <img className='image' src={Hotel1} alt="" />
               </div>
 
               {/* middle section */}

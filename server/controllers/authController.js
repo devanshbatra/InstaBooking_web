@@ -44,7 +44,7 @@ exports.login = async(req, res, next)=>{
         console.log("logged in as: ", username, password);
 
         //for user session - make a jwt token and store that into the cookies using cookie parser
-        const token = jwt.sign({id: user._id, isAdmin: user.isAdmin}, process.env.jwt);
+        const token = jwt.sign({id: user._id, isAdmin: user.isAdmin}, process.env.JWT);
 
         //for sending cookie res.cookie(cookiename, cookievalue, {options for cookies}).json(otherthings)
 

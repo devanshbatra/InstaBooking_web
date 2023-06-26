@@ -4,6 +4,7 @@ import loginImg from '../assets/images/login/login_photo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/authContext';
 import axios from 'axios';
+import hostName from '../mocks/hostName';
 
 function Register() {
 
@@ -25,7 +26,7 @@ function Register() {
         e.preventDefault();
         dispatch({"type": "LOGIN_START"});
         try{
-            const res = await axios.post("http://localhost:80/auth/register", credentials);
+            const res = await axios.post(`${hostName}/auth/register`, credentials);
             dispatch({type: "LOGIN_SUCCESS", "payload": res.data});
             navigate("/");
         }catch(err){
@@ -55,7 +56,7 @@ function Register() {
                 <h1 className='right-head white center'>Already a user?</h1>
                 <p className="right-para white center">Login and continue you booking now!</p>
                 <Link to="/login"><button className='sign-btn white'>
-                    {loading? "Please wait..": "Loading"}    
+                    {loading? "Please wait..": "Login"}    
                 </button></Link>
             </div>
         </div>

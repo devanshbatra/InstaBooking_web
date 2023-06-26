@@ -1,7 +1,18 @@
 import React from 'react'
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const EmailBar = () => {
+
+    const [subscribe, setSubscribe] = useState(false);
+    const [email, setEmail] = useState("");
+
+    const handleSubscribe = (e)=>{
+        e.preventDefault();
+        if(email.length>0)
+            setSubscribe(true);
+    }
+
   return (
     <EmailBarCont>
         <h1 className="title">Save time, save money!</h1>
@@ -9,8 +20,8 @@ const EmailBar = () => {
             Sign up and we'll send the best deals for you
         </h2>
         <div className="email_input_cont">
-            <input type="email" name="email" id="email" placeholder='Your Email' />
-            <button>Subscribe</button>
+            <input type="email" name="email" id="email" placeholder='Your Email' value={email} onChange={(e)=>setEmail(e.target.value)} />
+            <button type='submit' onClick={handleSubscribe} >{subscribe?"You are subscribed!": "Subscribe"}</button>
         </div>
     </EmailBarCont>
   );
@@ -56,6 +67,7 @@ const EmailBarCont = styled.div`
             padding: 0.5rem;
             font-weight: bold;
             border-radius: 4px;
+            cursor: pointer;
 
         }
     }

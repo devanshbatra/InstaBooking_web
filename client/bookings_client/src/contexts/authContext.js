@@ -7,9 +7,10 @@ const INITIAL_STATE = {
 }
 
 //we will use it everywhere in different components.
+
 export const AuthContext = createContext(INITIAL_STATE);
 
-//reducer function - used to feed the new data to our state.
+//reducer function - used to feed the new data to our state. It returns the new state.
 const AuthReducer = (state, action)=>{
     //action has two child type and payload. action is sent to the a
     switch(action.type){
@@ -31,6 +32,12 @@ const AuthReducer = (state, action)=>{
                 loading: false,
                 error: action.payload
             };
+        case "LOGOUT":
+            return {
+                user: null,
+                loading: false,
+                error: null
+            }
         default:
             return state;
     }

@@ -4,6 +4,7 @@ import loginImg from '../assets/images/login/login_photo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/authContext';
 import axios from 'axios';
+import hostName from '../mocks/hostName';
 
 function Login() {
 
@@ -20,13 +21,13 @@ function Login() {
     const {error, loading, dispatch} = useContext(AuthContext);
 
     const handleLogin = async(e) =>{
-        console.log(credentials);
+        // console.log(credentials);
         e.preventDefault();
         dispatch({type: "LOGIN_START"});
         try{
-            const res = await axios.post("http://localhost:80/auth/login", credentials);
+            const res = await axios.post(`${hostName}/auth/login`, credentials);
             dispatch({type: "LOGIN_SUCCESS", payload: res.data});
-            console.log(res);
+            
             navigate("/");
             
         }catch(err){

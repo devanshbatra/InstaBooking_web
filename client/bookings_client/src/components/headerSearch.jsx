@@ -34,7 +34,7 @@ const HeaderSearch = () => {
 
     const handleSearch = ()=>{
         dispatch({type: "NEW_SEARCH", payload: {destination, dates, options}});
-        navigate('/hotels', {state: {destination, dates, options}});
+        navigate('/hotels', {state: {destination, dates, options, propertyType: ""}});
     }
 
     const handleOptions = (name, operation)=>{
@@ -126,6 +126,7 @@ const HeaderSearchCont = styled.div`
     border: 3px solid ${props=>props.theme.colors.secondary};
     position: relative;
     top: 85px;
+    z-index: 2;
     .searchItem{
         display: flex;
         align-items: center;

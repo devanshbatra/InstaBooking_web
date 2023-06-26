@@ -10,7 +10,7 @@ import PropertyList from '../components/propertyList';
 
 const Home = () => {
   return (
-    <div>
+    <OverAllCont>
       <Navbar/>
       <Header/>
       <HomeContainer>
@@ -22,9 +22,13 @@ const Home = () => {
         <EmailBar/>
         <Footer/>
       </HomeContainer>
-    </div>
+    </OverAllCont>
   );
 }
+
+const OverAllCont = styled.div`
+  position: relative;
+`
 
 const HomeContainer = styled.div`
   display: flex;

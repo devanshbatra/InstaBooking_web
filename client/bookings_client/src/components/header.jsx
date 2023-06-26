@@ -3,10 +3,17 @@ import styled from 'styled-components';
 import {FaBed, FaPlaneDeparture, FaCarAlt, FaTaxi} from "react-icons/fa";
 import HeaderSearch from './headerSearch';
 import { AuthContext } from '../contexts/authContext';
+import { useNavigate } from 'react-router-dom';
+import homeImg from '../assets/images/home_main/homeImg.png';
 
 
 const Header = ({type}) => {
     const {user} = useContext(AuthContext);
+    const navigate = useNavigate();
+    
+    const goToRegister = ()=>{
+        navigate("/register");
+    }
   return (
     <HeaderOuter>
         <div className='headerCont'>
@@ -45,7 +52,7 @@ const Header = ({type}) => {
                     </span>
                     <div>
                         {user? "": (
-                            <button className='headerBtn'>Sign in / Register</button>
+                            <button onClick={goToRegister} className='headerBtn'>Sign in / Register</button>
                         )}
                     </div>
                     <HeaderSearch/>
@@ -58,9 +65,22 @@ const Header = ({type}) => {
 
 
 const HeaderOuter = styled.div`
-    background-color: ${props=> props.theme.colors.primary};
+    /* background-color: ${props=> props.theme.colors.primary}; */
+    background: url(${homeImg}) center center/cover;
     color: ${props=> props.theme.colors.white};
     padding: 10px 0px 45px 0px;
+    position: relative;
+
+    &::after{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.26);
+        z-index: -1;
+    }
     .headerCont{
         width: 100%;
         max-width: 1024px;
@@ -69,6 +89,7 @@ const HeaderOuter = styled.div`
         justify-content: center;
         margin: auto;
     }
+    
 
     .headerList{
         display: flex;

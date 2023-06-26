@@ -22,7 +22,7 @@ try {
     console.log("error occured while connecting to mongo db: "+error);
   }
   
-  const PORT = 80;
+  const PORT = process.env.PORT || 80;
   
   //middlewares - use middlewares in specific order, because calling next anywhere means you are calling the next available middleware.
   //for cookies
